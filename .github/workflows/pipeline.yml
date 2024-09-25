@@ -91,7 +91,7 @@ jobs:
             rsconnect::connectApiUser(apiKey = Sys.getenv("CONNECT_API_KEY"), server = Sys.getenv("DEPLOYMENT_NAME"));
           
             rsconnect::deployApp(
-              appDir = "./public",           # check this
+              appDir = "./public",
               appName = Sys.getenv("DEPLOYMENT_NAME"),
               server = Sys.getenv("DEPLOYMENT_NAME"),
               account = Sys.getenv("CONNECT_ACCOUNT")
