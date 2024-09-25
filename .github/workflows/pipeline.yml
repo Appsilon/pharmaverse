@@ -69,14 +69,31 @@ jobs:
         if: ${{ github.ref == 'refs/heads/develop' }}
         run: hugo -e staging
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: Install rsconnect package
         if: ${{ github.ref == 'refs/heads/develop' }}
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-2
-
-      - name: Deploy static site to S3 bucket
+        run: |
+          Rscript -e '
+            install.packages("remotes");
+            install.packages("rsconnect");
+            remotes::install_deps(dependencies = TRUE);
+          '
+      - name: Deploy to Posit Connect
         if: ${{ github.ref == 'refs/heads/develop' }}
-        run: aws s3 sync ./public/ s3://openpharma/develop --delete
+        env:
+          CONNECT_SERVER: ${{ secrets.POSIT_CONNECT_SERVER }}
+          CONNECT_API_KEY: ${{ secrets.POSIT_CONNECT_API_KEY }}
+          CONNECT_ACCOUNT: ${{ secrets.POSIT_CONNECT_ACCOUNT }}
+          DEPLOYMENT_NAME: "pharmaverse-staging"
+        run: |
+          Rscript -e '
+            library(rsconnect);
+            rsconnect::addConnectServer(url = Sys.getenv("CONNECT_SERVER"), name = Sys.getenv("DEPLOYMENT_NAME"));
+            rsconnect::connectApiUser(apiKey = Sys.getenv("CONNECT_API_KEY"), server = Sys.getenv("DEPLOYMENT_NAME"));
+          
+            rsconnect::deployApp(
+              appDir = "./public",           # check this
+              appName = Sys.getenv("DEPLOYMENT_NAME"),
+              server = Sys.getenv("DEPLOYMENT_NAME"),
+              account = Sys.getenv("CONNECT_ACCOUNT")
+            );
+          '
