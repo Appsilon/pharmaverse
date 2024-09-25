@@ -32,19 +32,19 @@ jobs:
         with:
           cache-version: 2
 
-      - name: Run scripts
-        run: |
-          #Rscript scripts/add_badges.R
-          Rscript scripts/add_contributions.R
-        env:
-          GITHUB_PAT: ${{ secrets.PAT_TOKEN }}
+      # - name: Run scripts
+      #   run: |
+      #     Rscript scripts/add_badges.R
+      #     Rscript scripts/add_contributions.R
+      #   env:
+      #     GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run visualisations
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
           Rscript scripts/add_hexwall_network.R
         env:
-          GITHUB_PAT: ${{ secrets.PAT_TOKEN }}
+          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
