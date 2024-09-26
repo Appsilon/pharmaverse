@@ -74,16 +74,17 @@ jobs:
         env:
           CONNECT_SERVER: ${{ secrets.POSIT_CONNECT_SERVER }}
           CONNECT_API_KEY: ${{ secrets.POSIT_CONNECT_API_KEY }}
-          CONNECT_ACCOUNT: ${{ secrets.POSIT_CONNECT_ACCOUNT }}
           DEPLOYMENT_NAME: "pharmaverse-staging"
         run: |
           Rscript -e '
-            rsconnect::connectApiUser(apiKey = Sys.getenv("CONNECT_API_KEY"), server = Sys.getenv("CONNECT_SERVER"));
-          
+            rsconnect::addServer(url = Sys.getenv("CONNECT_SERVER"), name = Sys.getenv("DEPLOYMENT_NAME"));
+
+            rsconnect::connectApiUser(apiKey = Sys.getenv("CONNECT_API_KEY"), server = Sys.getenv("DEPLOYMENT_NAME"));
+          print(getwd())
+          print(getwd(".."))
             rsconnect::deployApp(
               appDir = "./public",
               appName = Sys.getenv("DEPLOYMENT_NAME"),
-              server = Sys.getenv("CONNECT_SERVER"),
-              account = Sys.getenv("CONNECT_ACCOUNT")
+              server = Sys.getenv("DEPLOYMENT_NAME")
             );
           '
