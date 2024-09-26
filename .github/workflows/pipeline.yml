@@ -71,29 +71,27 @@ jobs:
 
       - name: Debug directories
         if: ${{ github.ref == 'refs/heads/develop' }}
-        run: ls -la /home/runner/work/
+        run: ls -la /home/runner/ \ ls -la /home/runner/work/ \ ls -la /home/runner/work/pharmaverse/
 
-      - name: Deploy to Posit Connect
-        if: ${{ github.ref == 'refs/heads/develop' }}
-        env:
-          CONNECT_SERVER: ${{ secrets.POSIT_CONNECT_SERVER }}
-          CONNECT_API_KEY: ${{ secrets.POSIT_CONNECT_API_KEY }}
-          DEPLOYMENT_NAME: "pharmaverse-staging"
-        run: |
-          ls -la \
-          echo $CONNECT_SERVER \
-          Rscript -e '
-            print(getwd());
+      #- name: Deploy to Posit Connect
+      #  if: ${{ github.ref == 'refs/heads/develop' }}
+      #  env:
+      #    CONNECT_SERVER: ${{ secrets.POSIT_CONNECT_SERVER }}
+      #    CONNECT_API_KEY: ${{ secrets.POSIT_CONNECT_API_KEY }}
+      #    DEPLOYMENT_NAME: "pharmaverse-staging"
+      #  run: |
+      #    Rscript -e '
+      #      print(getwd());
 
-            print(Sys.getenv("$CONNECT_SERVER"));
+      #      print(Sys.getenv("$CONNECT_SERVER"));
 
-            rsconnect::addServer(url = Sys.getenv("CONNECT_SERVER"), name = Sys.getenv("DEPLOYMENT_NAME"));
+      #      rsconnect::addServer(url = Sys.getenv("CONNECT_SERVER"), name = Sys.getenv("DEPLOYMENT_NAME"));
 
-            rsconnect::connectApiUser(apiKey = Sys.getenv("CONNECT_API_KEY"), server = Sys.getenv("DEPLOYMENT_NAME"));
+      #      rsconnect::connectApiUser(apiKey = Sys.getenv("CONNECT_API_KEY"), server = Sys.getenv("DEPLOYMENT_NAME"));
 
-            rsconnect::deployApp(
-              appDir = "./public",
-              appName = Sys.getenv("DEPLOYMENT_NAME"),
-              server = Sys.getenv("DEPLOYMENT_NAME")
-            );
-          '
+      #      rsconnect::deployApp(
+      #        appDir = "./public",
+      #        appName = Sys.getenv("DEPLOYMENT_NAME"),
+      #        server = Sys.getenv("DEPLOYMENT_NAME")
+      #      );
+      #    '
