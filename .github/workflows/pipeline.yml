@@ -71,7 +71,7 @@ jobs:
 
       - name: Debug directories
         if: ${{ github.ref == 'refs/heads/develop' }}
-        run: ls -la
+        run: ls -la /home/runner/work/
 
       - name: Deploy to Posit Connect
         if: ${{ github.ref == 'refs/heads/develop' }}
@@ -80,10 +80,12 @@ jobs:
           CONNECT_API_KEY: ${{ secrets.POSIT_CONNECT_API_KEY }}
           DEPLOYMENT_NAME: "pharmaverse-staging"
         run: |
+          ls -la \
+          echo $CONNECT_SERVER \
           Rscript -e '
             print(getwd());
 
-            print(Sys.getenv("CONNECT_SERVER"));
+            print(Sys.getenv("$CONNECT_SERVER"));
 
             rsconnect::addServer(url = Sys.getenv("CONNECT_SERVER"), name = Sys.getenv("DEPLOYMENT_NAME"));
 
