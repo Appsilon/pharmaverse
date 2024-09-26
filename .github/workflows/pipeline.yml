@@ -78,14 +78,12 @@ jobs:
           DEPLOYMENT_NAME: "pharmaverse-staging"
         run: |
           Rscript -e '
-            library(rsconnect);
-            rsconnect::addConnectServer(url = Sys.getenv("CONNECT_SERVER"), name = Sys.getenv("DEPLOYMENT_NAME"));
-            rsconnect::connectApiUser(apiKey = Sys.getenv("CONNECT_API_KEY"), server = Sys.getenv("DEPLOYMENT_NAME"));
+            rsconnect::connectApiUser(apiKey = Sys.getenv("CONNECT_API_KEY"), server = Sys.getenv("CONNECT_SERVER"));
           
             rsconnect::deployApp(
               appDir = "./public",
               appName = Sys.getenv("DEPLOYMENT_NAME"),
-              server = Sys.getenv("DEPLOYMENT_NAME"),
+              server = Sys.getenv("CONNECT_SERVER"),
               account = Sys.getenv("CONNECT_ACCOUNT")
             );
           '
