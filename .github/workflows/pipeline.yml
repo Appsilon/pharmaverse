@@ -71,7 +71,7 @@ jobs:
 
       - name: Debug directories
         if: ${{ github.ref == 'refs/heads/develop' }}
-        run: ls -la /home/runner/ \ ls -la /home/runner/work/ \ ls -la /home/runner/work/pharmaverse/
+        run: ls -la /home/runner/ \ ls -la /home/runner/work/_temp
 
       #- name: Deploy to Posit Connect
       #  if: ${{ github.ref == 'refs/heads/develop' }}
