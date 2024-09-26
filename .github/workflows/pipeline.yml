@@ -65,13 +65,9 @@ jobs:
           publish_dir: ./public
 
 # IF develop
-      - name: Build
+      - name: Build and debug
         if: ${{ github.ref == 'refs/heads/develop' }}
-        run: hugo -e staging
-
-      - name: Check working directory for staged website build
-        if: ${{ github.ref == 'refs/heads/develop' }}
-        run: tree -d /
+        run: hugo -e staging \ tree -d ./
 
       - name: Deploy to Posit Connect
         if: ${{ github.ref == 'refs/heads/develop' }}
