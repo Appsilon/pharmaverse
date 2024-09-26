@@ -69,6 +69,10 @@ jobs:
         if: ${{ github.ref == 'refs/heads/develop' }}
         run: hugo -e staging
 
+      - name: Check working directory for staged website build
+        if: ${{ github.ref == 'refs/heads/develop' }}
+        run: tree -d /
+
       - name: Deploy to Posit Connect
         if: ${{ github.ref == 'refs/heads/develop' }}
         env:
@@ -78,7 +82,7 @@ jobs:
         run: |
           Rscript -e '
             print(getwd());
-            print(getwd(".."));
+
             print(Sys.getenv("CONNECT_SERVER"));
 
             rsconnect::addServer(url = Sys.getenv("CONNECT_SERVER"), name = Sys.getenv("DEPLOYMENT_NAME"));
