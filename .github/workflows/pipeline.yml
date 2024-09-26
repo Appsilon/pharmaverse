@@ -71,7 +71,7 @@ jobs:
 
       - name: Debug directories
         if: ${{ github.ref == 'refs/heads/develop' }}
-        run: find / -type d -name "hugo" 2>/dev/null | xargs -I {} ls -la {}
+        run: ls -la hugo
 
 
       - name: Deploy to Posit Connect
