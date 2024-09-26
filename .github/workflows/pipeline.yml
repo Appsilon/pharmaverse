@@ -69,14 +69,6 @@ jobs:
         if: ${{ github.ref == 'refs/heads/develop' }}
         run: hugo -e staging
 
-      - name: Install rsconnect package
-        if: ${{ github.ref == 'refs/heads/develop' }}
-        run: |
-          Rscript -e '
-            install.packages("remotes");
-            install.packages("rsconnect");
-            remotes::install_deps(dependencies = TRUE);
-          '
       - name: Deploy to Posit Connect
         if: ${{ github.ref == 'refs/heads/develop' }}
         env:
