@@ -32,12 +32,14 @@ jobs:
         with:
           cache-version: 2
 
-      # - name: Run scripts
-      #   run: |
-      #     Rscript scripts/add_badges.R
-      #     Rscript scripts/add_contributions.R
-      #   env:
-      #     GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      # Run R code
+      # Rscript scripts/add_contributions.R disabled
+      - name: Run scripts
+        run: |
+          Rscript scripts/add_badges.R
+          
+        env:
+          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run visualisations
         if: ${{ github.ref == 'refs/heads/main' }}
@@ -65,33 +67,18 @@ jobs:
           publish_dir: ./public
 
 # IF develop
-      - name: Build
-        if: ${{ github.ref == 'refs/heads/develop' }}
-        run: hugo -e staging
-
-      - name: Debug directories
-        if: ${{ github.ref == 'refs/heads/develop' }}
-        run: ls -la /home/runner/work/_temp \ ls -la /home/runner/work/_temp/Library
-
-      #- name: Deploy to Posit Connect
+      #- name: Build
       #  if: ${{ github.ref == 'refs/heads/develop' }}
-      #  env:
-      #    CONNECT_SERVER: ${{ secrets.POSIT_CONNECT_SERVER }}
-      #    CONNECT_API_KEY: ${{ secrets.POSIT_CONNECT_API_KEY }}
-      #    DEPLOYMENT_NAME: "pharmaverse-staging"
-      #  run: |
-      #    Rscript -e '
-      #      print(getwd());
+      #  run: hugo -e staging
 
-      #      print(Sys.getenv("$CONNECT_SERVER"));
+      #- name: Configure AWS Credentials
+      #  uses: aws-actions/configure-aws-credentials@v1
+      #  if: ${{ github.ref == 'refs/heads/develop' }}
+      #  with:
+      #    aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #    aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #    aws-region: us-east-2
 
-      #      rsconnect::addServer(url = Sys.getenv("CONNECT_SERVER"), name = Sys.getenv("DEPLOYMENT_NAME"));
-
-      #      rsconnect::connectApiUser(apiKey = Sys.getenv("CONNECT_API_KEY"), server = Sys.getenv("DEPLOYMENT_NAME"));
-
-      #      rsconnect::deployApp(
-      #        appDir = "./public",
-      #        appName = Sys.getenv("DEPLOYMENT_NAME"),
-      #        server = Sys.getenv("DEPLOYMENT_NAME")
-      #      );
-      #    '
+      #- name: Deploy static site to S3 bucket
+      #  if: ${{ github.ref == 'refs/heads/develop' }}
+      #  run: aws s3 sync ./public/ s3://openpharma/develop --delete

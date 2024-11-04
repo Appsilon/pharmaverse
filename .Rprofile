@@ -1,2 +1,3 @@
 source("renv/activate.R")
-options(renv.config.mran.enabled = FALSE)
+
+options(blogdown.hugo.version = "0.85.0")
