@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - develop
+      - fix-add_badge-script
   schedule:
     - cron: 0 13 * * 1 # At 13:00 on Monday
 
@@ -63,14 +64,14 @@ jobs:
           github_token: ${{ secrets.PHARMAVERSE_BOT }}
           publish_dir: ./public
 
-      # develop branch
+      # fix-add_badge-script branch
       - name: Build
-        if: ${{ github.ref == 'refs/heads/develop' }}
+        if: ${{ github.ref == 'refs/heads/fix-add_badge-script' }}
         run: hugo -e staging
 
       - name: Deploy to Netlify
         uses: netlify/actions/cli@master
-        if: ${{ github.ref == 'refs/heads/develop' }}
+        if: ${{ github.ref == 'refs/heads/fix-add_badge-script' }}
         with:
           args: deploy --dir=public --prod
         env:

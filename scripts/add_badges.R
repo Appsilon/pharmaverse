@@ -61,6 +61,8 @@ for (i in files_pharmaverse) {
   write_badge(i_badge_contributors, i, "badge_contributors")
 }
 
+print("badge created")
+
 # Make physical badges ----
 
 # Uses epijim's shieldR
@@ -108,7 +110,7 @@ if(length(missing) > 0) {
   message("The following packages are new to the pharmaverse: ",
           paste(missing, collapse = ", "))
 
-  
+  print("before shield_build")
   # render new badges
   for (i in missing) {
 
