@@ -37,14 +37,14 @@ jobs:
           Rscript scripts/add_badges.R
           Rscript scripts/add_contributions.R
         env:
-          GITHUB_PAT: ${{ secrets.PHARMAVERSE_BOT }}
+          GITHUB_PAT: ${{ secrets.GH_PAT }}
 
       - name: Run visualisations
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
           Rscript scripts/add_hexwall_network.R
         env:
-          GITHUB_PAT: ${{ secrets.PHARMAVERSE_BOT }}
+          GITHUB_PAT: ${{ secrets.GH_PAT }}
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
@@ -61,7 +61,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
-          github_token: ${{ secrets.PHARMAVERSE_BOT }}
+          github_token: ${{ secrets.GH_PAT }}
           publish_dir: ./public
 
       # fix-add_badge-script branch
