@@ -3,7 +3,6 @@ name: github pages
 on:
   push:
     branches:
-      - main
       - develop
       - fix-CI-issue
   schedule:
